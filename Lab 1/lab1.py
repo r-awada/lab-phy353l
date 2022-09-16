@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy.optimize as spy
 
 
 def FUN():
@@ -26,15 +27,15 @@ def FUN():
     table4['Average Intensity'] = tube4['H average intensity'].tolist()
     colors = ['green', 'blue', 'red', 'orange']
     labels = ['trial 1', 'trial 2', 'trial 3']
-
+    
     plt.plot(table1['hd_wave_1'],table1['Average Intensity'],
-              'g--', label='Tube 1')
+              'gx-', label='Tube 1')
     plt.plot(table1['hd_wave_1'],table2['Average Intensity'],
-              'r--', label='Tube 2')
+              'r^-', label='Tube 2')
     plt.plot(table1['hd_wave_1'],table3['Average Intensity'],
-              'b--', label='Tube 3')
+              'b*-', label='Tube 3')
     plt.plot(table1['hd_wave_1'],table4['Average Intensity'],
-              'y--', label='Tube 4')
+              'yo-', label='Tube 4')
     plt.title('Average Intensity of All Tubes')
     plt.xlabel('Wavelength (nm)')
     plt.ylabel('Intensity')
