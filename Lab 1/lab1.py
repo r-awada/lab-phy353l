@@ -1,6 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.optimize as spy
+import numpy as np
+
+
+def gaus(x, a, b, c):
+    return a*np.exp(-(x-b)*(x-b)/(2 * c*c))
 
 
 def FUN():
@@ -27,21 +32,30 @@ def FUN():
     table4['Average Intensity'] = tube4['H average intensity'].tolist()
     colors = ['green', 'blue', 'red', 'orange']
     labels = ['trial 1', 'trial 2', 'trial 3']
-    
-    plt.plot(table1['hd_wave_1'],table1['Average Intensity'],
-              'gx-', label='Tube 1')
-    plt.plot(table1['hd_wave_1'],table2['Average Intensity'],
-              'r^-', label='Tube 2')
-    plt.plot(table1['hd_wave_1'],table3['Average Intensity'],
-              'b*-', label='Tube 3')
-    plt.plot(table1['hd_wave_1'],table4['Average Intensity'],
-              'yo-', label='Tube 4')
+
+    plt.plot(table1['hd_wave_1'], table1['Average Intensity'],
+             'gx', label='Tube 1')
+    plt.plot(table1['hd_wave_1'], table2['Average Intensity'],
+             'r^', label='Tube 2')
+    plt.plot(table1['hd_wave_1'], table3['Average Intensity'],
+             'b*', label='Tube 3')
+    plt.plot(table1['hd_wave_1'], table4['Average Intensity'],
+             'yo', label='Tube 4')
     plt.title('Average Intensity of All Tubes')
     plt.xlabel('Wavelength (nm)')
     plt.ylabel('Intensity')
     plt.legend(loc="upper left")
     plt.show()
-
+    params, pcov = spy.curve_fit(
+        gaus, table4['Average Intensity'], table1['hd_wave_1'])
+    print(params, pcov)
+    func = []
+    for i in table4['Average Intensity']:
+        func.append(gaus(i,params[0],params[1],params[2]))
+    plt.plot(table4['h_wave_1'], func)
+    plt.plot(table1['hd_wave_1'], table4['Average Intensity'],
+             'yo', label='Tube 4')
+    plt.show()
     for i in range(1, 4):
         plt.plot(table1[f"hd_wave_{i}"], table1[f"hd_intensity_{i}"],
                  color=colors[i-1], linestyle='dashed', linewidth=1, label=labels[i-1])
@@ -61,6 +75,25 @@ def FUN():
     plt.legend(loc="upper left")
     plt.show()
 
+    for i in range(1, 4):
+        plt.plot(table3[f"hd_wave_{i}"], table3[f"hd_intensity_{i}"],
+                 color=colors[i-1], linestyle='dashed', linewidth=1, label=labels[i-1])
+    print('made plt for tube3')
+    plt.title('H Intensity vs Wavelength Tube 3')
+    plt.xlabel('Wavelength (nm)')
+    plt.ylabel('Intensity')
+    plt.legend(loc="upper left")
+    plt.show()
+
+    for i in range(1, 4):
+        plt.plot(table4[f"h_wave_{i}"], table4[f"h_intensity_{i}"],
+                 color=colors[i-1], linestyle='dashed', linewidth=1, label=labels[i-1])
+    print('made plt for tube4')
+    plt.title('H Intensity vs Wavelength Tube 4')
+    plt.xlabel('Wavelength (nm)')
+    plt.ylabel('Intensity')
+    plt.legend(loc="upper left")
+    plt.show()
     for i in range(1, 4):
         plt.plot(table2[f"h_wave_{i}"], table2[f"h_intensity_{i}"],
                  color=colors[i-1], linestyle='dashed', linewidth=1, label='H')
