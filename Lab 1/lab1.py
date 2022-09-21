@@ -5,14 +5,18 @@ import numpy as np
 
 
 def gaus(x, a, b, c):
-    return a*np.exp(-(x-b)*(x-b)/(2 * c*c))
+    return a*np.exp(-(x-b)**2/(2 * c**2))
+
+
+def gaus2(x, a, b, c, d, e, f):
+    return a*np.exp(-(x-b)*(x-b)/(2 * c*c)) + d*np.exp(-(x-e)*(x-e)/(2 * f*f))
 
 
 def FUN():
-    tube1 = pd.read_csv("tube1.csv")
-    tube2 = pd.read_csv("tube2.csv")
-    tube3 = pd.read_csv("tube3.csv")
-    tube4 = pd.read_csv("tube4.csv")
+    tube1 = pd.read_csv("tube1trunc.csv")
+    tube2 = pd.read_csv("tube2trunc.csv")
+    tube3 = pd.read_csv("tube3trunc.csv")
+    tube4 = pd.read_csv("tube4trunc.csv")
     table1 = dict()
     table2 = dict()
     table3 = dict()
@@ -46,15 +50,22 @@ def FUN():
     plt.ylabel('Intensity')
     plt.legend(loc="upper left")
     plt.show()
+
+    pguess = [5309, 655.85, 2E-2]
     params, pcov = spy.curve_fit(
-        gaus, table4['Average Intensity'], table1['hd_wave_1'])
+        gaus, table4['Average Intensity'], table1['hd_wave_1'], p0=pguess)
     print(params, pcov)
     func = []
-    for i in table4['Average Intensity']:
-        func.append(gaus(i,params[0],params[1],params[2]))
-    plt.plot(table4['h_wave_1'], func)
-    plt.plot(table1['hd_wave_1'], table4['Average Intensity'],
+    guess = []
+
+    for i in table4['h_wave_1']:
+        guess.append(gaus(i, *pguess))
+        func.append(gaus(i, *params))
+    plt.plot(table4['h_wave_1'], func, 'b--', label="Function Fun time")
+    plt.plot(table4['h_wave_1'], guess, 'r--', label='Guess')
+    plt.plot(table4['h_wave_1'], table4['Average Intensity'],
              'yo', label='Tube 4')
+    plt.legend(loc="upper left")
     plt.show()
     for i in range(1, 4):
         plt.plot(table1[f"hd_wave_{i}"], table1[f"hd_intensity_{i}"],
