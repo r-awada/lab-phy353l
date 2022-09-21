@@ -5,7 +5,7 @@ import numpy as np
 
 
 def gaus(x, a, b, c):
-    return a*np.exp(-(x-b)**2/(2 * c**2))
+    return a*np.exp((-(x-b)**2)/(2 * c**2))
 
 
 def gaus2(x, a, b, c, d, e, f):
@@ -51,9 +51,9 @@ def FUN():
     plt.legend(loc="upper left")
     plt.show()
 
-    pguess = [5309, 655.85, 2E-2]
+    pguess = [5100, 655.8, 2E-2]
     params, pcov = spy.curve_fit(
-        gaus, table4['Average Intensity'], table1['hd_wave_1'], p0=pguess)
+        gaus, table1['hd_wave_1'], table4['Average Intensity'], p0=pguess)
     print(params, pcov)
     func = []
     guess = []
