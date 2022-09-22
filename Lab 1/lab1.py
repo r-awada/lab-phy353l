@@ -46,33 +46,43 @@ def FUN():
 
     pguess4 = [5900, 655.82, 5E-2]
     pguess2 = [5900, 655.82, 5E-2]
-    pguess1 = [5900, 655.82, 5E-2, 3000,654,5E-2]
+    pguess1 = [5900, 655.82, 5E-2, 3000,655.6,5E-2]
+    pguess3 = [5900, 655.82, 5E-2, 2000,655.6,5E-2]
+
     params4, pcov4 = spy.curve_fit(
         gaus,x, table4['Average Intensity'], p0=pguess4)
     params2, pcov2 = spy.curve_fit(
         gaus,x, table2['Average Intensity'], p0=pguess2)
     params1, pcov1 = spy.curve_fit(
         gaus2,x, table1['Average Intensity'], p0=pguess1)
-    print(params2, pcov2)
+    params3, pcov3 = spy.curve_fit(
+        gaus2,x, table3['Average Intensity'], p0=pguess3)
+    
     guess2 = []
     func2 = []
     func4 = []
     guess4 = []
     func1 = []
     guess1 = []
+    func3 = []
+    guess3 = []
+    x_strawberry = np.linspace(x[0],x[-1],10000)
+
     # Compute y values for guess and model
-    for i in x:
+    for i in x_strawberry:
         guess2.append(gaus(i, *pguess2))
         func2.append(gaus(i, *params2))
         guess4.append(gaus(i, *pguess4))
         func4.append(gaus(i, *params4))
         guess1.append(gaus2(i, *pguess1))
         func1.append(gaus2(i, *params1))
+        guess3.append(gaus2(i, *pguess3))
+        func3.append(gaus2(i, *params3))
 
 
     #Plot model and guess and data 
-    plt.plot(x, func4, 'b--', label="Function Fun time")
-    plt.plot(x, guess4, 'r--', label='Guess')
+    plt.plot(x_strawberry, func4, 'b--', label="Function Fun time")
+    plt.plot(x_strawberry, guess4, 'r--', label='Guess')
     plt.plot(x, table4['Average Intensity'],
              'yo', label='Tube 4')
     plt.legend(loc="upper left")
@@ -82,8 +92,8 @@ def FUN():
     print('Guess for tube 4 \n', params4, pcov4)
     plt.show()
     
-    plt.plot(x, func2, 'b--', label="Function Fun time")
-    plt.plot(x, guess2, 'r--', label='Guess')
+    plt.plot(x_strawberry, func2, 'b--', label="Function Fun time")
+    plt.plot(x_strawberry, guess2, 'r--', label='Guess')
     plt.plot(x, table2['Average Intensity'],
              'yo', label='Tube 2')
     plt.legend(loc="upper left")
@@ -93,8 +103,8 @@ def FUN():
     print('Guess for tube2 \n', params2, pcov2)
     plt.show()
 
-    plt.plot(x, func1, 'b--', label="Function Fun time")
-    plt.plot(x, guess1, 'r--', label='Guess')
+    plt.plot(x_strawberry, func1, 'b--', label="Function Fun time")
+    plt.plot(x_strawberry, guess1, 'r--', label='Guess')
     plt.plot(x, table1['Average Intensity'],
              'yo', label='Tube 1')
     plt.legend(loc="upper left")
@@ -103,6 +113,23 @@ def FUN():
     plt.ylabel('Intensity')
     print('Guess for tube1 \n', params1, pcov1)
     plt.show()
+
+    plt.plot(x_strawberry, func3, 'b--', label="Function Fun time")
+    plt.plot(x_strawberry, guess3, 'r--', label='Guess')
+    plt.plot(x, table3['Average Intensity'],
+             'yo', label='Tube 3')
+    plt.legend(loc="upper left")
+    plt.title('Average Intensity of Tube3')
+    plt.xlabel('Wavelength (nm)')
+    plt.ylabel('Intensity')
+    print('Guess for tube3 \n', params3, pcov3)
+    plt.show()
+    print()
+    print("The Difference in Wavelengths tube 1")
+    print(params1[1]-params1[4])
+    print()
+    print("The Difference in Wavelengths tube 3")
+    print(params3[1]-params3[4])
    # plt.plot(table1['hd_wave_1'], table1['Average Intensity'],
    #          'gx', label='Tube 1')
    # plt.plot(table1['hd_wave_1'], table2['Average Intensity'],
