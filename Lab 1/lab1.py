@@ -150,7 +150,7 @@ def FUN():
         plt.legend(loc="upper left")
         plt.title(f'Tube1 Trial{i} Intensity vs Wavelength')
         plt.xlabel('Wavelength (nm)')
-        plt.ylabel('Intensity')
+        plt.ylabel('Intensity (W/m^2)')
         plt.show()
 
     for i in range(1,4):
@@ -164,7 +164,7 @@ def FUN():
         plt.legend(loc="upper left")
         plt.title(f'Tube3 Trial{i} Intensity vs Wavelength')
         plt.xlabel('Wavelength (nm)')
-        plt.ylabel('Intensity')
+        plt.ylabel('Intensity (W/m^2)')
         plt.show()
     return
 
