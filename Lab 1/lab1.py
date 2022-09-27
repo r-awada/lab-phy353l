@@ -89,14 +89,6 @@ def FUN():
     total_uncertainty = 0
     total_wave_diff = 0
     final_uncertainty = 0
-    tube3_wave_diff_hydro = uncer31*params31[1] + uncer32*params32[1] + uncer33*params33[1]
-    tube3_wave_diff_deu= uncer311*params31[4] + uncer312*params32[4] + uncer313*params33[4]
-    tube3_uncer_diff_hydro = uncer31 + uncer32 + uncer33
-    tube3_uncer_diff_deu= uncer311 + uncer312 + uncer313
-    tube3_uncer_hydro_final = 1/((1/uncer31)**2 +(1/uncer32)**2 + (1/uncer33)**2)**1/2
-    tube3_uncer_deu_final = 1/((1/uncer311)**2 + (1/uncer312)**2 + (1/uncer313)**2)**1/2
-    print(f"The average hydrogen tube3 wave is {tube3_wave_diff_hydro/tube3_uncer_diff_hydro} +/- {tube3_uncer_hydro_final}")
-    print(f"The average deu tube 3  wave is {tube3_wave_diff_hydro/tube3_uncer_diff_hydro} +/- {tube3_uncer_deu_final}")
     for i in range(1,4):
         print(f"For Tube 3 Trial {i} the difference in wavelength is")
         print(f"{peak3[i]} +/- {uncertainty3[i]} nm")
@@ -119,14 +111,13 @@ def FUN():
     peak1[1] = abs(params11[1]-params11[4])
     peak1[2] = abs(params12[1]-params12[4])
     peak1[3] = abs(params13[1]-params13[4])
-    tube1_wave_diff_hydro = uncer11*params11[1] + uncer12*params12[1] + uncer13*params13[1]
-    tube1_wave_diff_deu= uncer211*params11[4] + uncer212*params12[4] + uncer213*params13[4]
-    tube1_uncer_diff_hydro = uncer11 + uncer12 + uncer13
-    tube1_uncer_diff_deu= uncer211 + uncer212 + uncer213
-    tube1_uncer_hydro_final = 1/((1/uncer11)**2 + (1/uncer12)**2 + (1/uncer13)**2)**1/2
     tube1_uncer_deu_final = 1/((1/uncer211)**2 + (1/uncer212)**2 + (1/uncer213)**2)**1/2
-    print(f"The average hydrogen tube1 wave is {tube1_wave_diff_hydro/tube1_uncer_diff_hydro} +/- {tube1_uncer_hydro_final}")
-    print(f"The average deu tube 1  wave is {tube1_wave_diff_hydro/tube1_uncer_diff_hydro} +/- {tube1_uncer_deu_final}")
+    tube3_wave_diff_hydro = uncer31*params31[1] + uncer32*params32[1] + uncer33*params33[1] +  uncer11*params11[1] + uncer12*params12[1] + uncer13*params13[1]
+    tube3_wave_diff_deu= uncer311*params31[4] + uncer312*params32[4] + uncer313*params33[4] +uncer211*params11[4] + uncer212*params12[4] + uncer213*params13[4]
+    tube3_uncer_diff_hydro = uncer31 + uncer32 + uncer33 + uncer11 + uncer12 + uncer13
+    tube3_uncer_diff_deu= uncer311 + uncer312 + uncer313 + uncer211 + uncer212 + uncer213
+    tube3_uncer_hydro_final = 1/((1/uncer11)**2 + (1/uncer12)**2 + (1/uncer13)**2+ (1/uncer31)**2 +(1/uncer32)**2 + (1/uncer33)**2)**1/2
+    tube3_uncer_deu_final = 1/((1/uncer211)**2 + (1/uncer212)**2 + (1/uncer213)**2+ (1/uncer311)**2 + (1/uncer312)**2 + (1/uncer313)**2)**1/2
     for i in range(1,4):
         print(f"For Tube 1 Trial {i} the difference in wavelength is")
         print(f"{peak1[i]} +/- {uncertainty1[i]} nm")
@@ -136,7 +127,9 @@ def FUN():
         final_uncertainty += (1/(uncertainty1[i]))**2
     final_uncertainty = 1/final_uncertainty**(1/2)
     print(f"The total wave difference is {total_wave_diff/total_uncertainty} +/- {final_uncertainty}")
-
+    print('------------------')
+    print(f"The average hydrogen wave is {tube3_wave_diff_hydro/tube3_uncer_diff_hydro} +/- {tube3_uncer_hydro_final}")
+    print(f"The average deu wave is {tube3_wave_diff_deu/tube3_uncer_diff_deu} +/- {tube3_uncer_deu_final}")
     func1 = {1:[],2:[],3:[]}
     func3 = {1:[],2:[],3:[]}
 
