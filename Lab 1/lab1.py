@@ -89,6 +89,9 @@ def FUN():
     total_uncertainty = 0
     total_wave_diff = 0
     final_uncertainty = 0
+    print(f"Tube3 T1 Peak Hydrogen {params31[1]} +/- {uncer31} Peak Deuterium {params31[4]} +/- {uncer311}")
+    print(f"Tube3 T2 Peak Hydrogen {params32[1]} +/- {uncer32} Peak Deuterium {params32[4]} +/- {uncer312}")
+    print(f"Tube3 T3 Peak Hydrogen {params33[1]} +/- {uncer33} Peak Deuterium {params33[4]} +/- {uncer313}")
     for i in range(1,4):
         print(f"For Tube 3 Trial {i} the difference in wavelength is")
         print(f"{peak3[i]} +/- {uncertainty3[i]} nm")
@@ -111,6 +114,9 @@ def FUN():
     peak1[1] = abs(params11[1]-params11[4])
     peak1[2] = abs(params12[1]-params12[4])
     peak1[3] = abs(params13[1]-params13[4])
+    print(f"Tube1 T1 Peak Hydrogen {params11[1]} +/- {uncer11} Peak Deuterium {params11[4]} +/- {uncer211}")
+    print(f"Tube1 T2 Peak Hydrogen {params12[1]} +/- {uncer12} Peak Deuterium {params12[4]} +/- {uncer212}")
+    print(f"Tube1 T3 Peak Hydrogen {params13[1]} +/- {uncer13} Peak Deuterium {params13[4]} +/- {uncer213}")
     for i in range(1,4):
         print(f"For Tube 1 Trial {i} the difference in wavelength is")
         print(f"{peak1[i]} +/- {uncertainty1[i]} nm")
