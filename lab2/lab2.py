@@ -11,6 +11,11 @@ def LABLAB():
     def poison(x, mu):
         return poisson.pmf(x, mu)
 
+
+    def gaus(x, a, b, c):
+        return a*np.exp((-(x-b)**2)/(2 * c**2))
+
+
     #import data for the fun of it
     tall1 = pd.read_csv('tall50.csv')
     tall2 = pd.read_csv('tall500.csv')
@@ -19,19 +24,20 @@ def LABLAB():
     short2= pd.read_csv('short500.csv')
     short3= pd.read_csv('short1000.csv')
 
-    tall50counts = {'title':'Tall Occurance of Counts with 50 ms Integration Time of 10 s', "guess":[1]}
-    tall500counts = {'title':'Tall Occurance of Counts with 500 ms Integration Time of 100 s', "guess":[3]}
-    tall1000counts = {'title':'Tall Occurance of Counts with 1s Integration Time of 200 s', "guess":[23]}
-    short50counts = {'title':'Short Occurance of Counts with 50 ms Integration Time of 10 s',"guess":[2]}
-    short500counts= {'title':'Short Occurance of Counts with 500 ms Integration Time of 100 s',"guess":[23]}
-    short1000counts= {'title':'Short Occurance of Counts with 1s Integration Time of 100 s',"guess":[23]}
+    tall50counts = {'title':'Tall Occurance of Counts with 50 ms Integration Time of 10 s', "guess":[1], "guess2":[0.38,1,1]}
+    tall500counts = {'title':'Tall Occurance of Counts with 500 ms Integration Time of 100 s', "guess":[3], "guess2":[0.15,8,2]}
+    tall1000counts = {'title':'Tall Occurance of Counts with 1s Integration Time of 200 s', "guess":[23], "guess2":[0.19,44,5]}
+    short50counts = {'title':'Short Occurance of Counts with 50 ms Integration Time of 10 s',"guess":[2], "guess2":[0.29,2,2]}
+    short500counts= {'title':'Short Occurance of Counts with 500 ms Integration Time of 100 s',"guess":[23], "guess2":[0.111,23,3]}
+    short1000counts= {'title':'Short Occurance of Counts with 1s Integration Time of 200 s',"guess":[23], "guess2":[0.19,44,5]}
 
     data = [tall50counts, tall500counts, tall1000counts]
     paired_data= {0:short50counts,1:short500counts,2:short1000counts}
+    data2 = [tall50counts, tall500counts, tall1000counts, short50counts,short500counts,short1000counts]
 
 
 
-    def ploth(histo, title, binz, guess, label0):
+    def ploth(histo, title, binz, guess, label0, guess2):
         h = np.histogram(histo,bins=binz)
         entries, bin_edges, patches= plt.hist(histo,bins = binz,density=True,label=label0)
         uncer = [i**(1/2)/sum(h[0]) for i in h[0]]
@@ -39,16 +45,20 @@ def LABLAB():
         plt.xlabel('Count Number measured')
         plt.title(title)
         plt.legend(loc="upper left")
-        bin_middles = 0.5 * (bin_edges[1:] + bin_edges[:-1])
+        bin_middles = 0.5 * (bin_edges[1:]-.5 + bin_edges[:-1]+.5) 
         params, pcov = spy.curve_fit(poison,bin_middles, entries,p0=guess)
-        return params, pcov, entries, uncer 
+        try:
+            params2, pcov2 = spy.curve_fit(gaus,bin_middles, entries,p0=guess2)
+        except:
+            params2, pcov2 = 0, 0
+        return params, pcov, entries, uncer, params2, pcov2
 
     def plotp(params, title, label0, entries, uncer):
         x_fun = np.arange(len(entries))
         x = np.linspace(0,len(entries),100)
         plt.plot(x,poison(x,*params),'-', label = label0)
-        plt.plot(np.arange(len(entries)),entries,"o",label= "Original"+label0 )
-        plt.errorbar(np.arange(len(entries)),entries, yerr= uncer, linestyle='' )
+        plt.plot(np.arange(len(entries)),entries,"o",label= "Original"+label0)
+        plt.errorbar(np.arange(len(entries)),entries, yerr= uncer, linestyle='', marker='' )
         plt.legend(loc="upper left")
         plt.title(title)
         
@@ -63,20 +73,20 @@ def LABLAB():
 
     for num,i in enumerate(data):
         plt.legend(loc="upper left")
-        for j in range(1,2):
-            i[f'bins{j}'] = np.arange(max(i[j])) -0.5
-            i[f"params{j}"], i[f"pcov{j}"], i[f"entries{j}"], i[f"uncer{j}"] = ploth(i[j], i['title'], i[f'bins{j}'], i['guess'], f"Trial{j}")
-            paired_data[num][f'bins{j}'] = np.arange(max(paired_data[num][j])) -0.5
-            paired_data[num][f"params{j}"], paired_data[num][f"pcov{j}"], paired_data[num][f"entries{j}"], paired_data[num][f"uncer{j}"]= ploth(paired_data[num][j], paired_data[num]['title'], paired_data[num][f'bins{j}'], paired_data[num]['guess'], f"Trial{j}")
-        #plt.show()
+        for j in range(1,4):
+            i[f'bins{j}'] = np.arange(max(i[j])) 
+            i[f"params{j}"], i[f"pcov{j}"], i[f"entries{j}"], i[f"uncer{j}"], i[f"params2{j}"], i[f"pcov2{j}"] = ploth(i[j], i['title'], i[f'bins{j}'], i['guess'], f"Trial{j}", i[f"guess2"])
+            paired_data[num][f'bins{j}'] = np.arange(max(paired_data[num][j])) 
+            paired_data[num][f"params{j}"], paired_data[num][f"pcov{j}"], paired_data[num][f"entries{j}"], paired_data[num][f"uncer{j}"],paired_data[num][f"params2{j}"], paired_data[num][f"pcov2{j}"]= ploth(paired_data[num][j], paired_data[num]['title'], paired_data[num][f'bins{j}'], paired_data[num]['guess'], f"Trial{j}", paired_data[num][f"guess2"])
+            plt.show()
 
+    plt.clf()
 
-    for num, i in enumerate(data):
-        for j in range(1,2):
-            plotp(i[f"params{j}"], i['title'], f"Trial {j}", i[f"entries{j}"], i[f"uncer{j}"])
-            plotp(paired_data[num][f"params{j}"], paired_data[num]['title'], f"Trial {j}", paired_data[num][f"entries{j}"], paired_data[num][f"uncer{j}"])
-            #plotp(i[f"x{j}"],*i['guess'], i['title'], 'guess')
-        #plt.show()
+    for i in data2:
+        for j in range(1,4):
+            if type(i[f"params{j}"]) != type(0):
+                plotp(i[f"params{j}"], i['title'], f"Trial {j}", i[f"entries{j}"], i[f"uncer{j}"])
+        plt.show()
 
 
     def chi_dsit(chi,dof):
@@ -87,21 +97,32 @@ def LABLAB():
         ans = 0
         for num, i in enumerate(y_val):
             if sigma[num] != 0:
-                ans += 1/sigma[num]**2 * (i-poison(i,y_pois))**(2)
+                ans += (1/sigma[num])**2 * (i-y_pois[num])**(2)
         return ans
 
 
-    for num, i in enumerate(data):
-        for j in range(1,2):
+    plt.clf()
+    for num, i in enumerate(data2):
+        for j in range(1,4):
             dof = len(i[f"entries{j}"]) - 1
-            x = np.arange(dof+50)
+            x = np.linspace(0,dof+20,200)
             y = [chi_dsit(p,dof) for p in x]
-            y_pois = [poison(p,*i[f"params{j}"]) for p in range(len(i[f"entries{j}"]))]
+            y_pois = [poison(p,*i[f"params{j}"]) for p in np.arange(0.5,0.5+len(i[f"entries{j}"]),1)]
             chi = chi_squared(y_pois, i[f"entries{j}"], i[f"uncer{j}"])
-            print(chi)
-            plt.clf()
             plt.plot(x,y)
-            plt.axvline(x = chi)
+            plt.axvline(x = chi, color = "blue", label='Poisson')
+            big = scipy.stats.chi2.ppf(1-.05, df=dof)
+            small = scipy.stats.chi2.ppf(.05, df=dof)
+            plt.axvline(x = big, color = "black")
+            plt.axvline(x = small, color = "black")
+            if type(i[f"params2{j}"]) != type(0):
+                y_pois2 = [gaus(p,*i[f"params2{j}"]) for p in np.arange(0.5,0.5+len(i[f"entries{j}"]),1)]
+                chi2 = chi_squared(y_pois2, i[f"entries{j}"], i[f"uncer{j}"])
+                plt.axvline(x = chi2, color = "red", label='Gaussian')
+            plt.title(f"Trial {j}: "+i['title'])
+            plt.legend(loc="upper right")
+            plt.xlabel("Chi Squared")
+            plt.ylabel("Probabilty Distribution of Chi Squared")
             plt.show()
 
 
