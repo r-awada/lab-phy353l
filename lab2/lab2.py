@@ -24,12 +24,12 @@ def LABLAB():
     short2= pd.read_csv('short500.csv')
     short3= pd.read_csv('short1000.csv')
 
-    tall50counts = {'title':'Tall Occurance of Counts with 50 ms Integration Time of 10 s', "guess":[1], "guess2":[0.38,1,1]}
-    tall500counts = {'title':'Tall Occurance of Counts with 500 ms Integration Time of 100 s', "guess":[3], "guess2":[0.15,8,2]}
-    tall1000counts = {'title':'Tall Occurance of Counts with 1s Integration Time of 200 s', "guess":[23], "guess2":[0.19,44,5]}
-    short50counts = {'title':'Short Occurance of Counts with 50 ms Integration Time of 10 s',"guess":[2], "guess2":[0.29,2,2]}
-    short500counts= {'title':'Short Occurance of Counts with 500 ms Integration Time of 100 s',"guess":[23], "guess2":[0.111,23,3]}
-    short1000counts= {'title':'Short Occurance of Counts with 1s Integration Time of 200 s',"guess":[23], "guess2":[0.19,44,5]}
+    tall50counts = {'title':'ROI1 Occurance of Counts with 50 ms Integration Time of 10 s', "guess":[1], "guess2":[0.38,1,1]}
+    tall500counts = {'title':'ROI1 Occurance of Counts with 500 ms Integration Time of 100 s', "guess":[3], "guess2":[0.15,8,2]}
+    tall1000counts = {'title':'ROI1 Occurance of Counts with 1s Integration Time of 200 s', "guess":[23], "guess2":[0.19,44,5]}
+    short50counts = {'title':'ROI2 Occurance of Counts with 50 ms Integration Time of 10 s',"guess":[2], "guess2":[0.29,2,2]}
+    short500counts= {'title':'ROI2 Occurance of Counts with 500 ms Integration Time of 100 s',"guess":[23], "guess2":[0.111,23,3]}
+    short1000counts= {'title':'ROI2 Occurance of Counts with 1s Integration Time of 200 s',"guess":[23], "guess2":[0.19,44,5]}
 
     data = [tall50counts, tall500counts, tall1000counts]
     paired_data= {0:short50counts,1:short500counts,2:short1000counts}
@@ -76,11 +76,13 @@ def LABLAB():
         for j in range(1,4):
             i[f'bins{j}'] = np.arange(max(i[j])) 
             i[f"params{j}"], i[f"pcov{j}"], i[f"entries{j}"], i[f"uncer{j}"], i[f"params2{j}"], i[f"pcov2{j}"] = ploth(i[j], i['title'], i[f'bins{j}'], i['guess'], f"Trial{j}", i[f"guess2"])
+            plt.show()
             paired_data[num][f'bins{j}'] = np.arange(max(paired_data[num][j])) 
             paired_data[num][f"params{j}"], paired_data[num][f"pcov{j}"], paired_data[num][f"entries{j}"], paired_data[num][f"uncer{j}"],paired_data[num][f"params2{j}"], paired_data[num][f"pcov2{j}"]= ploth(paired_data[num][j], paired_data[num]['title'], paired_data[num][f'bins{j}'], paired_data[num]['guess'], f"Trial{j}", paired_data[num][f"guess2"])
             plt.show()
 
     plt.clf()
+
 
     for i in data2:
         for j in range(1,4):
