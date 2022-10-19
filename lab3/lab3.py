@@ -35,9 +35,12 @@ def main():
             i.drag()
             i.radi()
             i.charge()
+            i.charge_per_mass()
     make_drops(data, drops)
 
     plt.hist([i.q for i in drops])
+    plt.show()
+    plt.hist([i.qpm for i in drops])
     plt.show()
 
 
