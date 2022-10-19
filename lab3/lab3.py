@@ -41,6 +41,7 @@ def main():
     plt.hist([i.q for i in drops])
     plt.show()
     plt.hist([i.qpm for i in drops])
+    print(f"The total number of drops we recorded was {len(drops)}")
     plt.show()
 
 

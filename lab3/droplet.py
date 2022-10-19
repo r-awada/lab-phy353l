@@ -28,7 +28,7 @@ class drop:
         r = ((9*self.n*self.fall_vel)/(2*self.density*9.81))**(1/2)
         self.neff = self.n*(1/(1+((8.2e-3)/(101325*r))))
         self.r = r * (1/(1+(8.2e-3)/101325*r))**(1/2)
-        self.r = ((9*self.neff*self.fall_vel)/(2*self.density*9.81))**(1/2)
+        #self.r = ((9*self.neff*self.fall_vel)/(2*self.density*9.81))**(1/2)
 
     def charge(self):
         self.q = (4*self.d*math.pi*self.r**3 * self.density * 9.81 * (self.fall_vel + self.rise_vel))/(3*self.fall_vel*self.V)
