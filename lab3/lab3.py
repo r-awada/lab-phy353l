@@ -35,14 +35,17 @@ def main():
             i.drag()
             i.radi()
             i.charge()
-            i.charge_per_mass()
     make_drops(data, drops)
+    total = []
+    for i in drops:
+        for j in i.q:
+            total.append(j)
 
-    plt.hist([i.q for i in drops])
+    plt.hist(total)
     plt.show()
-    plt.hist([i.qpm for i in drops])
-    print(f"The total number of drops we recorded was {len(drops)}")
-    plt.show()
+    #plt.hist([i.qpm for i in drops])
+    #print(f"The total number of drops we recorded was {len(drops)}")
+    #plt.show()
 
 
 main()
