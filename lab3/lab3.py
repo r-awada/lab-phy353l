@@ -40,8 +40,8 @@ def main():
             i.charge()
             i.charge_per_mass()
     make_drops(data, drops)
-
-    plt.hist([i.q for i in drops])
+    binz = np.linspace(0,5e-19,20)
+    plt.hist([i.q for i in drops], bins=binz)
     plt.show()
     plt.hist([i.qpm for i in drops])
     print(f"The total number of drops we recorded was {len(drops)}")
