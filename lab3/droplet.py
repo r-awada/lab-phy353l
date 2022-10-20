@@ -19,6 +19,7 @@ class drop:
     def rise_vel(self):
         #avg_rise = sum(self.rise)/len(self.rise)
         distance = (self.dist / 16.7) * 0.00001 #convert pixels to meters
+        self.dist = (self.dist / 16.7) * 0.00001 #convert pixels to meters
         self.rise_vel = [distance/i for i in self.rise]
 
     def drag(self):
@@ -37,7 +38,8 @@ class drop:
         print(len(self.fall_vel), len(self.r), len(self.rise_vel))
         for i in range(len(self.fall_vel)):
             self.q.append((4*self.d*math.pi*self.r[i]**3 * self.density * 9.81 * (self.fall_vel[i] + self.rise_vel[i]))/(3*self.fall_vel[i]*self.V))
-            print(self.q[i]/1.62e-19)
+            if self.q[i]/1.6e-19 > 1:
+                print(f"charge {self.q[i]/1.6e-19}fall {1/(self.fall_vel[i]/self.dist)} rise {1/(self.rise_vel[i]/self.dist)}")
 
     def charge_per_mass(self):
         self.qpm = self.q/(self.density * 4/3 * math.pi * self.r**3)
