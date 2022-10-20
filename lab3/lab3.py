@@ -36,12 +36,13 @@ def main():
             i.radi()
             i.charge()
     make_drops(data, drops)
+    binz = np.linspace(0,5e-19,20)
     total = []
     for i in drops:
         for j in i.q:
             total.append(j)
 
-    plt.hist(total)
+    plt.hist(total, bins=binz)
     plt.show()
     #plt.hist([i.qpm for i in drops])
     #print(f"The total number of drops we recorded was {len(drops)}")
