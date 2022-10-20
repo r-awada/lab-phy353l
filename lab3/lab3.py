@@ -21,7 +21,10 @@ def main():
         for i in data:
             if math.isnan(i):
                 drops.append(curr)
-                curr = drop(40,[],[],26)
+                if len(drops)< 22:
+                    curr = drop(40,[],[],25)
+                else:
+                    curr = drop(60,[],[],26)
                 num = 1
             elif num ==2:
                 curr.rise.append(i)
