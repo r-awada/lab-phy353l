@@ -38,8 +38,8 @@ class drop:
         print(len(self.fall_vel), len(self.r), len(self.rise_vel))
         for i in range(len(self.fall_vel)):
             self.q.append((4*self.d*math.pi*self.r[i]**3 * self.density * 9.81 * (self.fall_vel[i] + self.rise_vel[i]))/(3*self.fall_vel[i]*self.V))
-            if self.q[i]/1.6e-19 > 1:
-                print(f"charge {self.q[i]/1.6e-19}fall {1/(self.fall_vel[i]/self.dist)} rise {1/(self.rise_vel[i]/self.dist)}")
+            if self.q[i]/1.6e-19 > 1.2:
+                print(f"charge {self.q[i]/1.6e-19}fall {1/(self.fall_vel[i]/self.dist)} rise {1/(self.rise_vel[i]/self.dist)}", self.q[i])
 
     def charge_per_mass(self):
         self.qpm = self.q/(self.density * 4/3 * math.pi * self.r**3)
