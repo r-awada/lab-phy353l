@@ -32,7 +32,6 @@ class drop:
 
     def charge(self):
         self.q = (4*self.d*math.pi*self.r**3 * self.density * 9.81 * (self.fall_vel + self.rise_vel))/(3*self.fall_vel*self.V)
-        print(self.q/1.602e-19)
 
     def charge_per_mass(self):
         self.qpm = self.q/(self.density * 4/3 * math.pi * self.r**3)

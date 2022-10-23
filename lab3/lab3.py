@@ -40,12 +40,13 @@ def main():
             i.charge()
             i.charge_per_mass()
     make_drops(data, drops)
-    binz = np.linspace(0,5e-19,20)
+    binz = np.linspace(0,5e-19,30)
     plt.hist([i.q for i in drops], bins=binz)
+    plt.xlabel('Average Charge Measured Per Droplet (Coulombs)')
+    plt.ylabel('Count of Droplets')
+    plt.title('Histogram of Average Charge Per Droplet')
     plt.show()
-    plt.hist([i.qpm for i in drops])
     print(f"The total number of drops we recorded was {len(drops)}")
-    plt.show()
 
 
 main()
