@@ -66,13 +66,16 @@ def main():
     plt.show()
     print(f"The total number of drops we recorded was {len(drops)}")
 
-    guess = [6, 1.6e-19, 0.7e-19, 4, 3.2e-19, 0.2e-19]
+    guess = [8, 1.6e-19, 0.7e-19, 4, 3.2e-19, 0.2e-19]
     params, pcov = spy.curve_fit(gaus2, bin_middles, entries, p0=guess)
     print(params)
-    print(np.diag(pcov))
-    x = np.linspace(0, 5e-19, 100)
+    pcov = (np.diag(pcov))
+    x = np.linspace(0, 5e-19, 1000)
     plt.plot(x, gaus2(x, *params))
     plt.hist([i.q for i in drops], bins=binz)
+    plt.xlabel('Average Charge Measured Per Droplet (Coulombs)')
+    plt.ylabel('Count of Droplets')
+    plt.title('Function Fit Over Histogram')
     plt.show()
 
     dof = sum(entries) - 1
@@ -94,9 +97,13 @@ def main():
     plt.axvline(x=big, color="black")
     plt.axvline(x=small, color="black")
     plt.legend(loc="upper right")
+    plt.title('Chi-Squared Distribution and Chi-Squared Value of Fit')
     plt.xlabel("Chi-Squared")
     plt.ylabel("Probabilty Distribution of Chi Squared")
     plt.show()
+    pcov = [i**(1/2) for i in pcov]
+    print(pcov)
+
 
 
 main()
