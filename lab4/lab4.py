@@ -40,7 +40,9 @@ def main():
 
     for i in elements:
         plt.plot(i.x, i.y)
-        plt.title(i.name)
+        plt.title(f"Gamma Ray Energy Distribution for {i.name}")
+        plt.xlabel('Energy (keV)')
+        plt.ylabel('Counts')
         try:
             plt.axvline(x=i.comp, color="black")
             plt.axvline(x=i.comp2, color="black")
