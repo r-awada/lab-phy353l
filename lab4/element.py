@@ -31,6 +31,10 @@ class element:
             self.comp - self.x_positive_uncertainty)
         self.x_negative_uncertainty = abs(
             self.comp - self.x_negative_uncertainty)
+        if self.x_positive_uncertainty == 0:
+            self.x_positive_uncertainty = self.scale
+        if self.x_negative_uncertainty == 0:
+            self.x_negative_uncertainty = self.scale
         print(
             f"{self.name} {self.comp} + {self.x_positive_uncertainty} - {self.x_negative_uncertainty}")
 
@@ -49,8 +53,12 @@ class element:
         self.comp2 = final_pos * self.scale
         self.x_positive_uncertainty = abs(
             self.comp2 - self.x_positive_uncertainty)
+        if self.x_positive_uncertainty == 0:
+            self.x_positive_uncertainty = self.scale
         self.x_negative_uncertainty = abs(
             self.comp2 - self.x_negative_uncertainty)
+        if self.x_negative_uncertainty == 0:
+            self.x_negative_uncertainty = self.scale
         print(
             f"{self.name} {self.comp2} + {self.x_positive_uncertainty} - {self.x_negative_uncertainty}")
 
@@ -64,9 +72,9 @@ class element:
 
     def uncertainty(self, start, stop, start2, stop2):
         avg = sum([i * i**(1/2) for i in self.y[start:stop]]) / \
-                  sum(self.y[start:stop])
+                  sum([i**(1/2) for i in self.y[start:stop]])
         avg2 = sum([i * i**(1/2) for i in self.y[start2:stop2]]) / \
-            sum(self.y[start2:stop2])
+                  sum([i**(1/2) for i in self.y[start2:stop2]])
 
         uncer = 1/(sum([(1/i**(1/2))**2 for i in self.y[start:stop]]))**(1/2)
         uncer2 = 1 / \
@@ -74,6 +82,7 @@ class element:
 
         total_uncer = 1/2 * (uncer**2 + uncer2**2)**(1/2)
         total = (avg+avg2)/2
+        self.t1 = total
         mini_dist = 999999999999898898989898989898
         final_pos = 0
         for i in range(stop, start2+1):
